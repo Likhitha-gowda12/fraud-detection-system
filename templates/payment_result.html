@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Result</title>
+
+    <style>
+        body {
+            background: #020617;
+            color: white;
+            font-family: 'Segoe UI';
+            text-align: center;
+        }
+
+        .box {
+            margin-top: 150px;
+        }
+
+        .safe { color: #22c55e; }
+        .suspicious { color: orange; }
+        .fraud { color: red; }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            border: none;
+            background: #38bdf8;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>Processing Payment to {{ name }}...</h2>
+
+<h1 class="
+{% if 'High' in result %}fraud
+{% elif 'Suspicious' in result %}suspicious
+{% else %}safe
+{% endif %}
+">
+{{ result }}
+</h1>
+
+<h3>Amount: ₹{{ amount }}</h3>
+<h3>Risk Score: {{ confidence }}%</h3>
+
+{% if 'High' in result %}
+<p>🚨 Transaction Blocked for Safety</p>
+{% elif 'Suspicious' in result %}
+<p>⚠️ Please verify before proceeding</p>
+{% else %}
+<p>✅ Payment Successful</p>
+{% endif %}
+
+<button onclick="window.location.href='/'">Make Another Payment</button>
+
+</div>
+
+</body>
+</html>

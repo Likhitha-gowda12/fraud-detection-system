@@ -1,125 +1,62 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AI Fraud Detection</title>
+    <title>UPI Payment</title>
 
     <style>
         body {
-            margin: 0;
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #020617, #0f172a);
+            background: #020617;
             color: white;
+            font-family: 'Segoe UI';
             text-align: center;
-            overflow-x: hidden;
         }
 
-        .container {
+        .card {
             margin-top: 120px;
-            animation: fadeIn 1.2s ease-in;
-        }
-
-        h1 {
-            font-size: 42px;
-            margin-bottom: 20px;
+            background: #0f172a;
+            padding: 30px;
+            border-radius: 15px;
+            width: 300px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         input {
-            padding: 14px;
-            width: 260px;
+            padding: 12px;
+            width: 90%;
+            margin: 10px;
             border-radius: 10px;
             border: none;
-            outline: none;
         }
 
         button {
-            padding: 14px 25px;
-            border: none;
+            padding: 12px;
+            width: 95%;
             border-radius: 10px;
             background: #22c55e;
+            border: none;
             color: white;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
         }
 
         button:hover {
-            transform: scale(1.05);
             background: #16a34a;
         }
-
-        .loader {
-            margin-top: 20px;
-            display: none;
-        }
-
-        .result {
-            margin-top: 40px;
-            font-size: 28px;
-            animation: slideUp 0.8s ease;
-        }
-
-        .safe { color: #22c55e; }
-        .suspicious { color: orange; }
-        .fraud { color: red; }
-
-        a {
-            display: block;
-            margin-top: 40px;
-            color: #38bdf8;
-            text-decoration: none;
-        }
-
-        @keyframes fadeIn {
-            from {opacity: 0;}
-            to {opacity: 1;}
-        }
-
-        @keyframes slideUp {
-            from {transform: translateY(40px); opacity: 0;}
-            to {transform: translateY(0); opacity: 1;}
-        }
     </style>
-
-    <script>
-        function showLoader() {
-            document.getElementById("loader").style.display = "block";
-        }
-    </script>
 </head>
 
 <body>
 
-<div class="container">
+<div class="card">
 
-    <h1>🚨 AI Fraud Detection</h1>
+<h2>💳 UPI Payment</h2>
 
-    <form action="/predict" method="post" onsubmit="showLoader()">
-        <input type="number" name="amount" placeholder="Enter Amount" required>
-        <button type="submit">Analyze</button>
-    </form>
-
-    <div id="loader" class="loader">
-        ⏳ Processing...
-    </div>
-
-    {% if prediction %}
-    <div class="result">
-
-        <h2 class="
-            {% if 'High' in prediction %}fraud
-            {% elif 'Suspicious' in prediction %}suspicious
-            {% else %}safe
-            {% endif %}
-        ">
-            {{ prediction }}
-        </h2>
-
-        <h3>Risk Score: {{ confidence }}%</h3>
-
-    </div>
-    {% endif %}
-
-    <a href="/dashboard">View Dashboard →</a>
+<form action="/predict" method="post">
+    <input type="text" name="name" placeholder="Receiver Name" required>
+    <input type="number" name="amount" placeholder="Enter Amount" required>
+    <button type="submit">Pay Now</button>
+</form>
 
 </div>
 
