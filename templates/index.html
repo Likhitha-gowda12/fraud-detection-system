@@ -7,45 +7,55 @@
         body {
             margin: 0;
             font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0f172a, #1e293b);
+            background: linear-gradient(135deg, #020617, #0f172a);
             color: white;
             text-align: center;
+            overflow-x: hidden;
         }
 
         .container {
-            margin-top: 100px;
+            margin-top: 120px;
+            animation: fadeIn 1.2s ease-in;
         }
 
         h1 {
-            font-size: 40px;
-            margin-bottom: 30px;
+            font-size: 42px;
+            margin-bottom: 20px;
         }
 
         input {
-            padding: 12px;
-            width: 250px;
+            padding: 14px;
+            width: 260px;
             border-radius: 10px;
             border: none;
-            margin-right: 10px;
+            outline: none;
         }
 
         button {
-            padding: 12px 20px;
+            padding: 14px 25px;
             border: none;
             border-radius: 10px;
             background: #22c55e;
             color: white;
             font-weight: bold;
             cursor: pointer;
+            transition: 0.3s;
         }
 
         button:hover {
+            transform: scale(1.05);
             background: #16a34a;
+        }
+
+        .loader {
+            margin-top: 20px;
+            display: none;
         }
 
         .result {
             margin-top: 40px;
             font-size: 28px;
+            animation: slideUp 0.8s ease;
         }
 
         .safe { color: #22c55e; }
@@ -54,27 +64,43 @@
 
         a {
             display: block;
-            margin-top: 30px;
+            margin-top: 40px;
             color: #38bdf8;
             text-decoration: none;
         }
 
-        a:hover {
-            text-decoration: underline;
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        @keyframes slideUp {
+            from {transform: translateY(40px); opacity: 0;}
+            to {transform: translateY(0); opacity: 1;}
         }
     </style>
+
+    <script>
+        function showLoader() {
+            document.getElementById("loader").style.display = "block";
+        }
+    </script>
 </head>
 
 <body>
 
 <div class="container">
 
-    <h1>🚨 AI Fraud Detection System</h1>
+    <h1>🚨 AI Fraud Detection</h1>
 
-    <form action="/predict" method="post">
-        <input type="number" name="amount" placeholder="Enter Transaction Amount" required>
-        <button type="submit">Analyze Transaction</button>
+    <form action="/predict" method="post" onsubmit="showLoader()">
+        <input type="number" name="amount" placeholder="Enter Amount" required>
+        <button type="submit">Analyze</button>
     </form>
+
+    <div id="loader" class="loader">
+        ⏳ Processing...
+    </div>
 
     {% if prediction %}
     <div class="result">
@@ -85,7 +111,7 @@
             {% else %}safe
             {% endif %}
         ">
-            Status: {{ prediction }}
+            {{ prediction }}
         </h2>
 
         <h3>Risk Score: {{ confidence }}%</h3>
@@ -93,7 +119,7 @@
     </div>
     {% endif %}
 
-    <a href="/dashboard">View Analytics Dashboard →</a>
+    <a href="/dashboard">View Dashboard →</a>
 
 </div>
 
