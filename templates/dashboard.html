@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Fraud Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            background-color: #0f172a;
+            color: white;
+            font-family: Arial;
+            text-align: center;
+        }
+
+        table {
+            margin: auto;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid white;
+        }
+
+        h1 {
+            color: #38bdf8;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>🚨 Live Fraud Monitoring Dashboard</h1>
+
+<h2>Total Transactions: {{ total }}</h2>
+<h2>Fraud: {{ fraud }}</h2>
+<h2>Suspicious: {{ suspicious }}</h2>
+<h2>Safe: {{ safe }}</h2>
+
+<canvas id="chart" width="200" height="200"></canvas>
+
+<script>
+const ctx = document.getElementById('chart');
+
+new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: ['Fraud', 'Suspicious', 'Safe'],
+        datasets: [{
+            data: [{{ fraud }}, {{ suspicious }}, {{ safe }}]
+        }]
+    }
+});
+</script>
+
+<table>
+<tr>
+    <th>Amount</th>
+    <th>Status</th>
+    <th>Confidence</th>
+</tr>
+
+{% for row in data %}
+<tr style="
+    {% if 'High Risk' in row[1] %}background-color:red;color:white;
+    {% elif 'Suspicious' in row[1] %}background-color:orange;
+    {% endif %}
+">
+    <td>{{ row[0] }}</td>
+    <td>{{ row[1] }}</td>
+    <td>{{ row[2] }}%</td>
+</tr>
+{% endfor %}
+
+</table>
+
+<script>
+setInterval(() => {
+    location.reload();
+}, 5000);
+</script>
+
+</body>
+</html>

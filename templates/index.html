@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fraud Detection</title>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: white;
+            font-family: Arial;
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 8px;
+            border: none;
+        }
+
+        button {
+            background-color: #22c55e;
+            color: white;
+            cursor: pointer;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🚨 AI Fraud Detection System</h1>
+
+<form action="/predict" method="post">
+    <input type="number" step="0.01" name="amount" placeholder="Enter Transaction Amount" required>
+    <br>
+    <button type="submit">Analyze Transaction</button>
+</form>
+
+{% if prediction %}
+<div class="result">
+    <h2>Status: {{ prediction }}</h2>
+    <h3>Risk Score: {{ confidence }}%</h3>
+</div>
+{% endif %}
+
+<br>
+<a href="/dashboard" style="color:#38bdf8;">View Analytics Dashboard</a>
+
+</body>
+</html>
