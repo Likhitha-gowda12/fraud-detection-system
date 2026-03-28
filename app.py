@@ -5,6 +5,9 @@ import sqlite3
 import threading
 import time
 import random
+import warnings
+
+warnings.filterwarnings("ignore")
 
 app = Flask(__name__)
 
@@ -22,7 +25,7 @@ def init_db():
 
 init_db()
 
-# 🔥 AUTO TRANSACTION GENERATOR (REAL-TIME SIMULATION)
+# 🔥 Real-time transaction simulation
 def generate_transactions():
     while True:
         amount = random.randint(100, 50000)
@@ -32,16 +35,16 @@ def generate_transactions():
 
         prob = model.predict_proba(data)[0][1] * 100
 
+        # Optional boost for realism
         if amount > 15000:
-            prob += 20
+            prob += 10
 
         confidence = round(prob, 2)
 
-        if amount > 20000:
+        # ✅ FIXED LOGIC (CONSISTENT)
+        if confidence > 75:
             result = "High Risk Fraud"
-        elif confidence > 60:
-            result = "Suspicious"
-        elif amount > 10000:
+        elif confidence > 40:
             result = "Suspicious"
         else:
             result = "Safe"
@@ -52,12 +55,7 @@ def generate_transactions():
         conn.commit()
         conn.close()
 
-        time.sleep(5)  # every 5 seconds
-
-# Start background thread
-thread = threading.Thread(target=generate_transactions)
-thread.daemon = True
-thread.start()
+        time.sleep(5)
 
 # Home
 @app.route('/')
@@ -75,15 +73,14 @@ def predict():
     prob = model.predict_proba(data)[0][1] * 100
 
     if amount > 15000:
-        prob += 20
+        prob += 10
 
     confidence = round(prob, 2)
 
-    if amount > 20000:
+    # ✅ FIXED LOGIC
+    if confidence > 75:
         result = "High Risk Fraud"
-    elif confidence > 60:
-        result = "Suspicious"
-    elif amount > 10000:
+    elif confidence > 40:
         result = "Suspicious"
     else:
         result = "Safe"
@@ -132,6 +129,10 @@ def api_predict():
         "confidence": float(prob)
     })
 
-# Run
+# Run (thread AFTER everything initialized)
 if __name__ == "__main__":
+    thread = threading.Thread(target=generate_transactions)
+    thread.daemon = True
+    thread.start()
+
     app.run()
